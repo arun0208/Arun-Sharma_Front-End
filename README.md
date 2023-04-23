@@ -23,10 +23,10 @@ https://arunsteeleye.netlify.app/
 ```
 # Question 1
 ### Explain what the simple List component does.
-```bash
+
 The List component in React generates an unordered list of items by accepting an array of objects as props. Each item can be clicked and its background color toggles between green and red.
 The default background color of each element in the unordered list is red, but it changes to green when you click it. This feature can be used to indicate to the user that a particular element is being selected. Only one element can be selected at a time. After multiple clicks, only the last clicked element will be highlighted in green, and the rest of the elements will turn red.
-```
+
 # Question 2
 ### What problems / warnings are there with code?
 
