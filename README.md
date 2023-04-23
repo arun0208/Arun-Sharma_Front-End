@@ -1,70 +1,139 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# SteelEye FrontEnd Assignment
 
-## Available Scripts
+FrontEnd Assignment of SteelEye By Arun Sharma
+Reg no. 12001430
 
-In the project directory, you can run:
+Clone this Github Repository and run these command on terminal
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Install my-project with npm to run locally
 
-### `npm test`
+```bash
+  npm install 
+  npm start
+```
+or visit the link given below
+    
+## Website
+```bash
+https://arunsteeleye.netlify.app/
+```
+# Question 1
+### Explain what the simple List component does.
+```bash
+The List component in React generates an unordered list of items by accepting an array of objects as props. Each item can be clicked and its background color toggles between green and red.
+The default background color of each element in the unordered list is red, but it changes to green when you click it. This feature can be used to indicate to the user that a particular element is being selected. Only one element can be selected at a time. After multiple clicks, only the last clicked element will be highlighted in green, and the rest of the elements will turn red.
+```
+# Question 2
+### What problems / warnings are there with code?
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+#### The onClick handler for the li element in the SingleListItem component should reference a function, but it is currently calling onClickHandler immediately instead of passing it as a function. It should be replaced with:
+```bash
+		onClick={() => onClickHandler(index)}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### The isSelected prop is passes as a boolean in the SingleListItem component, but it should be passed as an index value that matches the index prop so that the selected item can be correctly highlighted. It should be replaced with:
+```bash
+isSelected={selectedIndex === index}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+#### In the WrappedListComponent component, the item prop type PropTypes.arrayOf should be used instead of PropTypes.array, and the shape should be defined as an object with a text property. It should be changed to:
+```bash
+items: PropTypes.arrayOf(
+  PropTypes.shape({
+    text: PropTypes.string.isRequired,
+  })
+ 	)
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### The WrappedListComponent component is misusing the useState hook. The first input to useState should be the initial state value, but it is currently being used as a setter function. To fix this issue, use the following code:
+```bash
+		const [selectedIndex, setSelectedIndex] = useState(null);
+```
+# Question 3
+### Please fix, optimize, and/or modify the component as much as you think is necessary.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import './app.css';
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+// Single List Item
+const SingleListItem = ({
+  index,
+  isSelected,
+  onClickHandler,
+  text,
+}) => {
+  return (
+    <li
+      style={{ backgroundColor: isSelected ? 'green' : 'red'}}
+      onClick={()=>onClickHandler(index)}
+    >
+      {text}
+    </li>
+  );
+};
 
-## Learn More
+SingleListItem.propTypes = {
+  index: PropTypes.number,
+  isSelected: PropTypes.bool,
+  onClickHandler: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+// List Component
+const List = ({
+  items,
+}) => {
+  const [selectedIndex,setSelectedIndex] = useState(null);
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  useEffect(() => {
+    setSelectedIndex(null);
+  }, [items]);
 
-### Code Splitting
+  const handleClick = (index) => {
+    setSelectedIndex(index);
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  return (
+    <>
+    <img src='https://www.steel-eye.com/hubfs/Blend%202019/Global/steeleye_logo_blue.svg' alt='steeleye logo'/>
+    <h1>Frontend Assignment</h1>
+    <ul style={{ textAlign: 'left' }}>
+      {items && items.map(({text}, index) => (
+        <SingleListItem
+          {...{onClickHandler: handleClick, text, index, isSelected: selectedIndex === index}}
+          key={index}
+        />
+      ))}
+    </ul>
+    <footer>© Arun Sharma (12001430) || All Rights Reserved</footer>
+    </>
+  )
+};
 
-### Analyzing the Bundle Size
+List.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    text: PropTypes.string.isRequired,
+  })),
+};
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+List.defaultProps = {
+  items: null,
+};
 
-### Making a Progressive Web App
+export default List;
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+## Author
 
-### Advanced Configuration
+- [@Arun Sharma](https://github.com/arun0208)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
